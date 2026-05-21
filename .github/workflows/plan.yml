@@ -27,7 +27,7 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: Terraform Validate
-        uses: dflook/terraform-validate@7878bff63e2099cdc9be9a6f33cbbbf687f8f0fe # v2
+        uses: dflook/terraform-validate@4cef5d8a4b92bcd88486e41e22a42942a382c9d6 # v2
         with:
           path: terraform
 
