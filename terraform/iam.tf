@@ -39,6 +39,22 @@ resource "aws_iam_role" "ecs_task" {
   })
 }
 
+resource "aws_iam_role_policy" "ecs_execution" {
+  role = aws_iam_role.ecs_execution.name
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow"
+        Sid      = "AllowSecretsManagerAccess"
+        Action   = ["secretsmanager:GetSecretValue"]
+        Resource = [aws_secretsmanager_secret.main.arn]
+      }
+    ]
+  })
+}
+
 resource "aws_iam_role_policy" "ecs_task" {
   name = "${var.app_name}-ecs-task-policy"
   role = aws_iam_role.ecs_task.id
@@ -47,9 +63,20 @@ resource "aws_iam_role_policy" "ecs_task" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect   = "Allow"
-        Action   = "*"
-        Resource = "*"
+        Effect = "Allow"
+        Sid    = "AllowS3Access"
+
+
+        Action = [
+          "S3:GetObject",
+          "S3:ListBucket",
+          "S3:PutObject",
+        ]
+
+        Resource = [
+          aws_s3_bucket.photos.arn,
+          "${aws_s3_bucket.photos.arn}/*"
+        ]
       }
     ]
   })

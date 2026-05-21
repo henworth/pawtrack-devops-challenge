@@ -1,3 +1,8 @@
+variable "db_password" {
+  description = "Database password"
+  type        = string
+}
+
 variable "aws_region" {
   description = "AWS region for all resources"
   type        = string
@@ -16,10 +21,10 @@ variable "app_name" {
   default     = "pawtrack"
 }
 
-variable "db_password" {
-  description = "Database password"
+variable "db_password_version" {
+  description = "Database password version"
   type        = string
-  default     = "pawtrack_super_secret_2024!"
+  default     = "1"
 }
 
 variable "db_username" {
