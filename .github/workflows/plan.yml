@@ -1,7 +1,7 @@
-name: Deploy Infrastructure
+name: Plan Infrastructure
 
 on:
-  push:
+  pull_request:
     branches:
       - main
 
@@ -10,11 +10,11 @@ permissions:
   pull-requests: write
 
 concurrency:
-  group: deploy-${{ github.ref }}
+  group: plan-${{ github.ref }}
   queue: max
 
 jobs:
-  deploy:
+  plan:
     runs-on: ubuntu-latest
 
     env:
@@ -26,8 +26,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
-      - name: Terraform Apply
-        uses: dflook/terraform-apply@7878bff63e2099cdc9be9a6f33cbbbf687f8f0fe # v2
+      - name: Terraform Validate
+        uses: dflook/terraform-validate@7878bff63e2099cdc9be9a6f33cbbbf687f8f0fe # v2
+        with:
+          path: terraform
+
+      - name: Terraform Plan
+        uses: dflook/terraform-plan@7878bff63e2099cdc9be9a6f33cbbbf687f8f0fe # v2
         with:
           path: terraform
           variables: |

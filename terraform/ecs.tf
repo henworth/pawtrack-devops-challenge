@@ -36,10 +36,13 @@ resource "aws_ecs_task_definition" "api" {
         {
           name  = "DB_USERNAME"
           value = var.db_username
-        },
+        }
+      ]
+
+      secrets = [
         {
-          name  = "DB_PASSWORD"
-          value = var.db_password
+          name      = "DB_PASSWORD"
+          valueFrom = aws_secretsmanager_secret.main.arn
         }
       ]
     }

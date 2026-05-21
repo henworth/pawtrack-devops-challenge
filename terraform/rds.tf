@@ -7,6 +7,20 @@ resource "aws_db_subnet_group" "main" {
   }
 }
 
+resource "aws_secretsmanager_secret" "main" {
+  name = "${var.app_name}-db-password"
+}
+
+resource "aws_secretsmanager_secret_version" "main" {
+  secret_id                = aws_secretsmanager_secret.main.id
+  secret_string_wo         = var.db_password
+  secret_string_wo_version = var.db_password_version
+}
+
+ephemeral "aws_secretsmanager_secret_version" "main" {
+  secret_id = aws_secretsmanager_secret_version.main.secret_id
+}
+
 resource "aws_db_instance" "main" {
   identifier           = "${var.app_name}-db"
   engine               = "postgres"
@@ -16,7 +30,8 @@ resource "aws_db_instance" "main" {
   storage_type         = "gp3"
   db_name              = "pawtrack"
   username             = var.db_username
-  password             = var.db_password
+  password_wo          = ephemeral.aws_secretsmanager_secret_version.main.secret_string
+  password_wo_version  = aws_secretsmanager_secret_version.main.secret_string_wo_version
   parameter_group_name = "default.postgres15"
   skip_final_snapshot  = true
 
