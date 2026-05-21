@@ -131,7 +131,7 @@ I primarily chose to address the plaintext credential issues, with a secondary f
 <!-- Describe 2 additional improvements you would make.
      For each: what, why, estimated effort, and trade-offs. -->
 
-1. Implement a Docker image build step in the GitHub Actions workflows. This would ensure that the ECS task is always running the latest version of the application. Would likely require a few hours of work to test and validate. Trade-off is that it adds complexity to the deployment pipeline, but without it any app changes would not be reflected in the deployed ECS task.
+1. Improve the Docker image build process in the GitHub Actions workflows by implementing promotion. This would reduce the time it takes to deploy by removing the need to rebuild the image for each commit to main. Would likely require a few hours to a data of work to test and validate. Trade-off is that it adds complexity to the deployment pipeline, but it would save time and also enable a way to not use `latest` which is not a best practice for production environments.
 
 2. Address the IAM security issues by implementing OIDC authentication for GitHub Actions and create dedicated roles for Terraform plan/apply, ECR push, and ECS task execution. Each would be created with least privilege principles in mind, which would further reduce the attack surface and plug the remaining gaping holes in security posture. Would also likely require a few hours of work to test and validate.
 

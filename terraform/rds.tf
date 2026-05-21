@@ -34,6 +34,7 @@ resource "aws_db_instance" "main" {
   password_wo_version  = aws_secretsmanager_secret_version.main.secret_string_wo_version
   parameter_group_name = "default.postgres15"
   skip_final_snapshot  = true
+  storage_encrypted    = true
 
   vpc_security_group_ids = [aws_security_group.rds.id]
   db_subnet_group_name   = aws_db_subnet_group.main.name
