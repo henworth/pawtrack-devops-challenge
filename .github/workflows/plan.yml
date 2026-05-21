@@ -11,7 +11,10 @@ permissions:
 
 concurrency:
   group: plan-${{ github.ref }}
-  queue: max
+  queue: single
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   plan:

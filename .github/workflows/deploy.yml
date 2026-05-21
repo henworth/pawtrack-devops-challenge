@@ -13,6 +13,9 @@ concurrency:
   group: deploy-${{ github.ref }}
   queue: max
 
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
